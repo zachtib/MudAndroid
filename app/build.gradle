@@ -1,0 +1,55 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+    compileSdkVersion 24
+    buildToolsVersion "24.0.2"
+
+    defaultConfig {
+        applicationId "com.zachtib.mudclient"
+        minSdkVersion 21
+        targetSdkVersion 24
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        pickFirst 'META-INF/services/com.fasterxml.jackson.core.ObjectCodec'
+        pickFirst 'META-INF/services/com.fasterxml.jackson.core.JsonFactory'
+        pickFirst 'META-INF/services/javax.xml.stream.XmlInputFactory'
+    }
+}
+
+configurations {
+    compile.exclude module: 'stax'
+    compile.exclude module: 'stax-api'
+    compile.exclude module: 'xpp3'
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:appcompat-v7:24.2.0'
+
+    // apt command comes from the android-apt plugin
+    apt 'com.google.dagger:dagger-compiler:2.5'
+    compile 'com.google.dagger:dagger:2.5'
+    provided 'javax.annotation:jsr250-api:1.0'
+
+    compile 'org.simpleframework:simple-xml:2.7.+'
+
+    // Butterknife
+    compile 'com.jakewharton:butterknife:8.4.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+
+    compile 'io.reactivex:rxandroid:1.2.1'
+    // Because RxAndroid releases are few and far between, it is recommended you also
+    // explicitly depend on RxJava's latest version for bug fixes and new features.
+    compile 'io.reactivex:rxjava:1.1.10'
+
+}
